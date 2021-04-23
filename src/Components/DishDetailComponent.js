@@ -5,10 +5,11 @@ import { Card, CardImg, CardText, CardBody,
 
 
 class DishDetail extends Component{
-    constructor(props){
-        super(props)
+    // constructor(props){
+    //     super(props)
+    //     // console.log(this.props)
+    // }
 
-    }
     render(){
         return(
             <div className="row">
@@ -17,6 +18,7 @@ class DishDetail extends Component{
             </div>
         );
     }
+
     renderDish(dish){
         if(dish != null){
             return(
@@ -46,7 +48,7 @@ class DishDetail extends Component{
                         <div key={comment.id}>
                             <ListGroupItem className="border-0">
                                 {comment.comment}<br/>
-                                {" -- "+comment.author + ", " +  this.monthFormat(new Date(date_))}
+                                {" -- "+comment.author + ", " +  this.monthFormat(date_)}
                             </ListGroupItem>
                         </div>
                     );
@@ -70,21 +72,22 @@ class DishDetail extends Component{
     }
 
     monthFormat(date){
-        const months = {
-            0: 'January',
-            1: 'February',
-            2: 'March',
-            3: 'April',
-            4: 'May',
-            5: 'June',
-            6: 'July',
-            7: 'August',
-            8: 'September',
-            9: 'October',
-            10: 'November',
-            11: 'December'
-          }
-        return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+        // const months = {
+        //     0: 'January',
+        //     1: 'February',
+        //     2: 'March',
+        //     3: 'April',
+        //     4: 'May',
+        //     5: 'June',
+        //     6: 'July',
+        //     7: 'August',
+        //     8: 'September',
+        //     9: 'October',
+        //     10: 'November',
+        //     11: 'December'
+        //   }
+        // return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+        return `${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(date)}`
     }
 }
 
