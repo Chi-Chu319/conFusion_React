@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from "reactstrap";
+import React from 'react';
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 
 
 
@@ -8,20 +8,16 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from "re
 function RenderMenuItem ({dish, onClick}) {
     return(
         <div>
-            <div key={dish.id} className="col-12 col-md-5 m-1">
-                {/* onclick here takes a function reference a callback or function definition */}
-                <Card onClick={()=>onClick(dish.id)}>
-                    <CardImg width="100%" src={dish.image} alt={dish.name} />
-                    <CardImgOverlay>
-                        <CardTitle>{dish.name}</CardTitle>
-                    </CardImgOverlay>
-                </Card>
-            </div>
+            {/* onclick here takes a function reference a callback or function definition */}
+            <Card onClick={()=>onClick(dish.id)}>
+                <CardImg width="100%" src={dish.image} alt={dish.name} />
+                <CardImgOverlay>
+                    <CardTitle>{dish.name}</CardTitle>
+                </CardImgOverlay>
+            </Card>
         </div>
     );
 }
-
-
 
 
 const Menu = (props) => {
@@ -29,7 +25,9 @@ const Menu = (props) => {
     // dishes onClick
     const menu = props.dishes.map((dish)=>{
             return(
-                <RenderMenuItem dish={dish} onClick={props.onClick}/>
+                <div key={dish.id} className="col-12 col-md-5 m-1"> 
+                    <RenderMenuItem dish={dish} onClick={props.onClick}/>
+                </div>
             );
         }
     )
