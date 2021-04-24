@@ -20,12 +20,12 @@ class Main extends Component{
 
   render(){
     return(
-      <div className="container">
-      <Navbar dark color="primary">
-        <div className="container">
-          <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-        </div>
-      </Navbar>
+      <div>
+        <Navbar dark color="primary">
+            <div className="container">
+            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
+            </div>
+        </Navbar>
       <Menu dishes = {this.state.dishes} onClick  = {(dishId)=>this.onDishSelect(dishId)}/>
       {/* The filter takes in a function reference which define contraints on the element inside the array. And return an array. Therefore, [0] needs to be added to access the element */}
       
