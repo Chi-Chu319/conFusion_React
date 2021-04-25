@@ -26,6 +26,7 @@ function RenderDish({dish}){
 }
 
 
+// In JSX, lower-case tag names are considered to be HTML tags. However, lower-case tag names with a dot (property accessor) aren't.
 function RenderComment({comments}){
     if(comments != null){
         const commentArray = comments.map(
@@ -34,7 +35,7 @@ function RenderComment({comments}){
                     <div key={comment.id}>
                         <ListGroupItem className="border-0">
                             {comment.comment}<br/>
-                            {" -- "+comment.author + ", " +  MonthFormat(new Date(comment.date))}
+                            {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
                         </ListGroupItem>
                     </div>
                 );
@@ -57,6 +58,9 @@ function RenderComment({comments}){
     }
 }
 
+function monthFormat(date){
+    return `${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(date)}`
+}
 
 const DishDetail = (props) => {
     return (
