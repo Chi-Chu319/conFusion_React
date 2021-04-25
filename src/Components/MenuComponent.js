@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
+import { Card, CardImg, CardImgOverlay, CardTitle, Jumbotron } from "reactstrap";
 
 
 
@@ -33,8 +33,10 @@ const Menu = (props) => {
     )
 
     return(
-        <div className="row">
-            {menu}
+        <div className="container">
+            <div className="row">
+                {menu}
+            </div>
         </div>
     );
 

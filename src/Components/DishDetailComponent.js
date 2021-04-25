@@ -64,12 +64,14 @@ function monthFormat(date){
 
 const DishDetail = (props) => {
     return (
-        <div className="row">
-            <div className="col-12 col-md-5 m-1">
-                <RenderDish dish = {props.dish}/>
-            </div>
-            <div className="col-12 col-md-5 m-1">
-                <RenderComment comments = {props.dish==null ? null:props.dish.comments}/>
+        <div className="container">
+            <div className="row">
+                <div className="col-12 col-md-5 m-1">
+                    <RenderDish dish = {props.dish}/>
+                </div>
+                <div className="col-12 col-md-5 m-1">
+                    <RenderComment comments = {props.dish==null ? null:props.dish.comments}/>
+                </div>
             </div>
         </div>
     );
