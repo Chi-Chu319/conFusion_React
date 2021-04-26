@@ -1,10 +1,10 @@
-import { Navbar, NavbarBrand, Jumbotron} from 'reactstrap';
 import Menu from "./MenuComponent";
-import DishDetail from "./DishDetailComponent";
 import { Component } from 'react';
 import { DISHES } from "../shared/dishes";
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Home from './HomeComponent'
+import {Switch, Route, Redirect, Router} from 'react-router-dom'
 
 
 class Main extends Component{
@@ -12,34 +12,38 @@ class Main extends Component{
     super(props)
     this.state = {
       dishes:DISHES,
-      selectedDish: null
     }
   }
 
-  onDishSelect(dishId){
-    this.setState({ selectedDish: dishId});
-}
+
 
   render(){
+      const HomePage = () => {
+          return (
+              <div>
+                  <Home />
+              </div>
+          )
+      }
     return(
       <div>
+          {/* header and footer will be applied to every page of the application */}
         <Header />
-        <Menu dishes = {this.state.dishes} onClick  = {(dishId)=>this.onDishSelect(dishId)}/>
-        {/* The filter takes in a function reference which define contraints on the element inside the array. And return an array. Therefore, [0] needs to be added to access the element */}
-        
-        {/********************** 
-         * Double equals (==) is a comparison operator, which transforms the operands having the same type before comparison.
-         * 
-         * So, when you compare string with a number, JavaScript converts any string to a number. 
-         * An empty string is always converts to zero. A string with no numeric value is converts to NaN (Not a Number), which returns false.
-         * 
-         * 
-         * === (Triple equals) is a strict equality comparison operator in JavaScript, which returns false for the values which are not of a similar type. 
-         * This operator performs type casting for equality. If we compare 2 with "2" using ===, then it will return a false value.
-         *
-         */}
-        
-        <DishDetail dish = {this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]}/>
+        {/*  enables grouping together several routes */}
+        <Switch>
+            {/* Now the problem here, when we go to http://app.com/users the router will go through all of our defined routes and return the FIRST match it finds. So in this case, it would find the Users route first and then return it. All good.
+
+                But, if we went to http://app.com/users/create, it would again go through all of our defined routes and return the FIRST match it finds. React router does partial matching, so /users partially matches /users/create, so it would incorrectly return the Users route again!
+
+                The exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url.
+
+                So in this case, we should add exact to our Users route so that it will only match on /users: */}
+            <Route path="/home" component={Home} />
+            {/* exact to avoid partial match */}
+            <Route exact path="/menu" component={() => <Menu dishes ={this.state.dishes} />} />
+            {/* set the default path if there is no match */}
+            <Redirect to="home" />
+        </Switch>
         <Footer />
     </div>
     );
