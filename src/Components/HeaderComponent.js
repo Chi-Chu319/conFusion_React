@@ -9,6 +9,7 @@ class Header extends Component{
         this.state = {
             isNavOpen: false
         }
+        // methods in js are defined without context. this is why bind is needed.
         this.toggleNav = this.toggleNav.bind(this)
     }
 

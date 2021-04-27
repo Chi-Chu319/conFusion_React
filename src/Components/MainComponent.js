@@ -1,10 +1,14 @@
-import Menu from "./MenuComponent";
+import { Switch, Route, Redirect} from 'react-router-dom'
 import { Component } from 'react';
 import { DISHES } from "../shared/dishes";
+import { PROMOTIONS } from "../shared/promotions"
+import { LEADERS } from "../shared/leaders"
+import { COMMENTS } from "../shared/comments"
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent'
-import {Switch, Route, Redirect, Router} from 'react-router-dom'
+import Menu from "./MenuComponent";
+import Contact from './ContactComponent'
 
 
 class Main extends Component{
@@ -12,6 +16,9 @@ class Main extends Component{
     super(props)
     this.state = {
       dishes:DISHES,
+      promotions: PROMOTIONS,
+      leaders: LEADERS,
+      comments: COMMENTS
     }
   }
 
@@ -20,9 +27,11 @@ class Main extends Component{
   render(){
       const HomePage = () => {
           return (
-              <div>
-                  <Home />
-              </div>
+                <Home 
+                dish = {this.state.dishes.filter((dish) => {return dish.featured} )[0]}
+                promotion = {this.state.promotions.filter((promotion) => promotion.featured)[0]}
+                leader = {this.state.leaders.filter((leader) => leader.featured)[0]}
+                />
           )
       }
     return(
@@ -38,9 +47,10 @@ class Main extends Component{
                 The exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url.
 
                 So in this case, we should add exact to our Users route so that it will only match on /users: */}
-            <Route path="/home" component={Home} />
+            <Route path="/home" component={HomePage} />
             {/* exact to avoid partial match */}
             <Route exact path="/menu" component={() => <Menu dishes ={this.state.dishes} />} />
+            <Route exact path="/contactus" component={Contact} />
             {/* set the default path if there is no match */}
             <Redirect to="home" />
         </Switch>
