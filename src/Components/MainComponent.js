@@ -9,6 +9,7 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent'
 import Menu from "./MenuComponent";
 import Contact from './ContactComponent'
+import DishDetail from './DishDetailComponent';
 
 
 class Main extends Component{
@@ -34,6 +35,16 @@ class Main extends Component{
                 />
           )
       }
+
+      const DishWithId = ({match}) =>{
+          var dishIdInt = parseInt(match.params.dishId);
+          return (
+            <DishDetail 
+            dish = {this.state.dishes.filter((dish) => dish.id === dishIdInt)[0]}
+            comments = {this.state.comments.filter((c) => c.dishId === dishIdInt)}
+            />
+          );
+      }
     return(
       <div>
           {/* header and footer will be applied to every page of the application */}
@@ -50,6 +61,7 @@ class Main extends Component{
             <Route path="/home" component={HomePage} />
             {/* exact to avoid partial match */}
             <Route exact path="/menu" component={() => <Menu dishes ={this.state.dishes} />} />
+            <Route path="/menu/:dishId" component={DishWithId} />
             <Route exact path="/contactus" component={Contact} />
             {/* set the default path if there is no match */}
             <Redirect to="home" />
