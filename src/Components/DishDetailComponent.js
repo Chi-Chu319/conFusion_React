@@ -126,15 +126,12 @@ function RenderComment({comments}){
         const commentArray = comments.map(
             (comment)=>{
                 return(
-                    <React.Fragment>
-                        <div key={comment.id}>
-                            <ListGroupItem className="border-0">
-                                {comment.comment}<br/>
-                                {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
-                            </ListGroupItem>
-                        </div>
-                        <CommentForm />
-                    </React.Fragment>
+                    <div key={comment.id}>
+                        <ListGroupItem className="border-0">
+                            {comment.comment}<br/>
+                            {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
+                        </ListGroupItem>
+                    </div>
                 );
             }
         )
@@ -146,6 +143,11 @@ function RenderComment({comments}){
                     </ListGroupItem>
                     {commentArray}
                 </ListGroup>
+                <div className="row">
+                    <div className="col-12">
+                        <CommentForm />
+                    </div>
+                </div>
             </div>
         );
     }else{

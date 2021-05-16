@@ -10,6 +10,7 @@ import About from './AboutComponent';
 import { connect } from 'react-redux';
 
 
+// connect from react-redux connect components to redux store.
 const mapStateToProps = (state)=>{
   return {
     dishes: state.dishes,
