@@ -26,6 +26,7 @@ class Header extends Component{
         )
     }
 
+    
     toggleModal(){
         this.setState(
             {
@@ -89,7 +90,7 @@ class Header extends Component{
                     </div>
                 </Jumbotron>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader >Login</ModalHeader>
+                    <ModalHeader>Login</ModalHeader>
                     <ModalBody>
                         
                     <Form onSubmit={this.handleLogin}>
