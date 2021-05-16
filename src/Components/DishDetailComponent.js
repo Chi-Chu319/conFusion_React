@@ -25,8 +25,8 @@ class CommentForm extends Component{
     }
 
     handleSubmit(values){
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.name, values.content)
     }
 
     render(){
@@ -121,7 +121,7 @@ function RenderDish({dish}){
 
 
 // In JSX, lower-case tag names are considered to be HTML tags. However, lower-case tag names with a dot (property accessor) aren't.
-function RenderComment({comments}){
+function RenderComment({comments, addComment, dishId}){
     if(comments != null){
         const commentArray = comments.map(
             (comment)=>{
@@ -145,7 +145,9 @@ function RenderComment({comments}){
                 </ListGroup>
                 <div className="row">
                     <div className="col-12">
-                        <CommentForm />
+                        <CommentForm 
+                        addComment = {addComment}
+                        dishId = {dishId}/>
                     </div>
                 </div>
             </div>
@@ -162,7 +164,6 @@ function monthFormat(date){
 }
 
 const DishDetail = (props) => {
-    console.log(props.comments)
     return (
         <div className="container">
             <div className="row">
@@ -181,7 +182,9 @@ const DishDetail = (props) => {
                     <RenderDish dish = {props.dish}/>
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                    <RenderComment comments = {props.comments}/>
+                    <RenderComment comments = {props.comments}
+                    addComment = {props.addComment}
+                    dishId = {props.dish.id}/>
                 </div>
             </div>
         </div>
