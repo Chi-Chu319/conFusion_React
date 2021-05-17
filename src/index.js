@@ -9,9 +9,10 @@ import 'bootstrap-social/bootstrap-social.css';
 
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  // </React.StrictMode>
+  ,
   document.getElementById('root')
 );
 
