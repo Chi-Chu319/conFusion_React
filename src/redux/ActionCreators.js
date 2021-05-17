@@ -14,13 +14,14 @@ export const addComment = (dishId, rating, author, comment) => ({
 });
 
 
-// note this function is not a action.
+// redux is a middleware that allow you to write action creators that return a function instead of a action
 // this is a funtion to load all the dishes to the web app.
 export const fetchDishes = () => (dispatch) => {
-    // dispatch is used to dispatch the action to the store
+    
     dispatch(dishesLoading(true));
 
     // delay of 2 seconds
+    // this action is delayed and dispatched.
     setTimeout(() => {
         dispatch(addDishes(DISHES));
     }, 2000)
