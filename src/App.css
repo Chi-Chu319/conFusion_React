@@ -31,3 +31,31 @@ address{
 .navbar-dark {
   background-color: #512DA8;
 }
+
+/* classes used by react-transition-group */
+
+/* state of page before entering the page */
+.page-enter {
+  opacity: 0.01;
+  transform: translateX(-100%);
+}
+
+/* state of page after entering the page */
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 300ms ease-in;
+}
+
+/* state of page before exiting the page */
+.page-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+/* state of page after exiting the page */
+.page-exit-active {
+  opacity: 0.01;
+  transform: translateX(100%);
+  transition: all 300ms ease-out;
+}

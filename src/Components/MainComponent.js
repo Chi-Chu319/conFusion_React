@@ -8,8 +8,9 @@ import Contact from './ContactComponent'
 import DishDetail from './DishDetailComponent';
 import About from './AboutComponent';
 import { connect } from 'react-redux';
-import { addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 
 
 // connect from react-redux connect components to redux store.
@@ -24,7 +25,7 @@ const mapStateToProps = (state)=>{
 
 // dispatch the addcomment action to modify the state
 const mapDispatchToProps = (dispatch)=>({
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
   // feedback is the state wrapped by createForm in the store
   resetFeedbackForm: ()=>dispatch(actions.reset("feedback")),
   fetchDishes: () => dispatch(fetchDishes()),
@@ -63,6 +64,8 @@ class Main extends Component{
 
       const DishWithId = ({match}) =>{
           var dishIdInt = parseInt(match.params.dishId);
+          console.log("commsnts from main component: ");
+          console.log(this.props.comments);
           return (
             <DishDetail 
             dish = {this.props.dishes.dishes.filter((dish) => dish.id === dishIdInt)[0]}
@@ -70,7 +73,7 @@ class Main extends Component{
             errMess = {this.props.dishes.errMess}
             comments = {this.props.comments.comments.filter((c) => c.dishId === dishIdInt)}
             commentsErrMess = {this.props.comments.errMess}
-            addComment = {this.props.addComment}
+            postComment = {this.props.postComment}
             />
           );
       }
@@ -79,23 +82,27 @@ class Main extends Component{
           {/* header and footer will be applied to every page of the application */}
         <Header />
         {/*  enables grouping together several routes */}
-        <Switch>
-            {/* Now the problem here, when we go to http://app.com/users the router will go through all of our defined routes and return the FIRST match it finds. So in this case, it would find the Users route first and then return it. All good.
+          <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames="page">
+              <Switch>
+                {/* Now the problem here, when we go to http://app.com/users the router will go through all of our defined routes and return the FIRST match it finds. So in this case, it would find the Users route first and then return it. All good.
 
-                But, if we went to http://app.com/users/create, it would again go through all of our defined routes and return the FIRST match it finds. React router does partial matching, so /users partially matches /users/create, so it would incorrectly return the Users route again!
+                    But, if we went to http://app.com/users/create, it would again go through all of our defined routes and return the FIRST match it finds. React router does partial matching, so /users partially matches /users/create, so it would incorrectly return the Users route again!
 
-                The exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url.
+                    The exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url.
 
-                So in this case, we should add exact to our Users route so that it will only match on /users: */}
-            <Route path="/home" component={HomePage} />
-            {/* exact to avoid partial match */}
-            <Route exact path="/menu" component={() => <Menu dishes ={this.props.dishes} />} />
-            <Route path="/menu/:dishId" component={DishWithId} />
-            <Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
-            <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} />
-            {/* set the default path if there is no match */}
-            <Redirect to="home" />
-        </Switch>
+                    So in this case, we should add exact to our Users route so that it will only match on /users: */}
+                <Route path="/home" component={HomePage} />
+                {/* exact to avoid partial match */}
+                <Route exact path="/menu" component={() => <Menu dishes ={this.props.dishes} />} />
+                <Route path="/menu/:dishId" component={DishWithId} />
+                <Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
+                <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} />
+                {/* set the default path if there is no match */}
+                <Redirect to="home" />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
         <Footer />
     </div>
     );

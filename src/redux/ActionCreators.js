@@ -1,16 +1,54 @@
 import * as ActionType from './ActionType'
 import {baseUrl} from "../shared/baseUrl"
 
-// the function returns an action object.
-export const addComment = (dishId, rating, author, comment) => ({
+// add the posted comment to
+// the comment is a comment onbject that was a response from the server
+export const addComment = (comment) => ({
     type: ActionType.ADD_COMMENT,
     payload: {
+        comment
+    }
+});
+
+// post the comment to the server
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+    const newComment =  {
         dishId: dishId, 
         rating: rating, 
         author: author, 
         comment: comment
     }
-});
+    newComment.date = new Date().toISOString();
+
+    return fetch(baseUrl + 'comments', {
+        method: "POST",
+        // make the newComment a string
+        body: JSON.stringify(newComment),
+        headers: {
+            // the body is in json format
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if(response.ok){
+            return response;
+        }else{
+            // if there is an error return from the server
+            var err = new Error("Error " + response.status + ": " + response.statusText)
+            err.response = response;
+            throw err;
+        }
+    },
+    err => {
+        var errmess = new Error(err.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    // the newly created comment will be send back as a response from the server
+    .then(comment => dispatch(addComment(comment)))
+    .catch(error => {{console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message);}});
+};
 
 
 /* dishes */

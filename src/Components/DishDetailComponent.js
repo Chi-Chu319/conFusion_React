@@ -6,6 +6,8 @@ import {Link} from "react-router-dom";
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import {Loading} from './LoadingComponent' 
 import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from 'react-animation-components'
+
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -27,7 +29,7 @@ class CommentForm extends Component{
 
     handleSubmit(values){
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.name, values.content)
+        this.props.postComment(this.props.dishId, values.rating, values.name, values.content)
     }
 
     render(){
@@ -51,7 +53,7 @@ class CommentForm extends Component{
                                     <option>2</option>
                                     <option>3</option>
                                     <option>4</option>
-                                    <option>6</option>
+                                    <option>5</option>
                                 </Control.select>
                             </div>
                             <div className="form-group">
@@ -104,13 +106,20 @@ function RenderDish({dish}){
     if(dish != null){
         return(
             <div>
-                <Card>
-                    <CardImg top width="100%" src={baseUrl + dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
+                <FadeTransform 
+                in
+                transformProps={{
+                    // where the card initially are and they will fade in to where they are supposed to be.
+                    exitTransform :'scale(0.5) translateY(-50%)'
+                }}>
+                    <Card>
+                        <CardImg top width="100%" src={baseUrl + dish.image} alt={dish.name} />
+                        <CardBody>
+                            <CardTitle>{dish.name}</CardTitle>
+                            <CardText>{dish.description}</CardText>
+                        </CardBody>
+                    </Card>
+                </FadeTransform>
             </div>  
         );
     }else{
@@ -122,17 +131,19 @@ function RenderDish({dish}){
 
 
 // In JSX, lower-case tag names are considered to be HTML tags. However, lower-case tag names with a dot (property accessor) aren't.
-function RenderComment({comments, addComment, dishId}){
+function RenderComment({comments, postComment, dishId}){
     if(comments != null){
         const commentArray = comments.map(
             (comment)=>{
                 return(
-                    <div key={comment.id}>
-                        <ListGroupItem className="border-0">
-                            {comment.comment}<br/>
-                            {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
-                        </ListGroupItem>
-                    </div>
+                    <Fade in>
+                        <div key={comment.id}>
+                            <ListGroupItem className="border-0">
+                                {comment.comment}<br/>
+                                {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
+                            </ListGroupItem>
+                        </div>
+                    </Fade>
                 );
             }
         )
@@ -142,12 +153,14 @@ function RenderComment({comments, addComment, dishId}){
                     <ListGroupItem className="border-0">
                         <h3>Comments</h3>
                     </ListGroupItem>
-                    {commentArray}
+                    <Stagger in>
+                        {commentArray}
+                    </Stagger>
                 </ListGroup>
                 <div className="row">
                     <div className="col-12">
                         <CommentForm 
-                        addComment = {addComment}
+                        postComment = {postComment}
                         dishId = {dishId}/>
                     </div>
                 </div>
@@ -201,7 +214,7 @@ const DishDetail = (props) => {
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComment comments = {props.comments}
-                        addComment = {props.addComment}
+                        postComment = {props.postComment}
                         dishId = {props.dish.id}/>
                     </div>
                 </div>

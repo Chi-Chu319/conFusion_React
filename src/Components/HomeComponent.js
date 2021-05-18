@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardImg, CardBody, CardText, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardBody, CardText, CardTitle, Fade } from 'reactstrap';
 import {Loading} from './LoadingComponent'
 import { baseUrl } from "../shared/baseUrl";
-
+import { FadeTransform } from 'react-animation-components'
 
 // {item} is the destructing of props(JSX way of passing parameter) passed into a function.
 function RenderCard({item, isLoading, errMess}){
@@ -24,6 +24,12 @@ function RenderCard({item, isLoading, errMess}){
         );
     }else{
         return (
+            <FadeTransform 
+            in
+            transformProps={{
+                // where the card initially are and they will fade in to where they are supposed to be.
+                exitTransform :'scale(0.5) translateY(-50%)'
+            }}>
             <Card>
                 <CardImg src={baseUrl + item.image} alt={item.name} />
                 <CardBody>
@@ -32,6 +38,7 @@ function RenderCard({item, isLoading, errMess}){
                     <CardText>{item.description}</CardText>
                 </CardBody>
             </Card>
+            </FadeTransform>
         );
     }
 }

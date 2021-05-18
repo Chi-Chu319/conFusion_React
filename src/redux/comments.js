@@ -8,11 +8,8 @@ export const Comments = (state={
         // add the comment from the comment form
         // if the action type is to add the comment into the state of comment
         case ActionTypes.ADD_COMMENT:
-            var comment = action.payload;
-            comment.id = state.length;
-            comment.date = new Date().toISOString()
-            // console.log("comment: ", comment)
-            return state.concat(comment)
+            var comment = action.payload.comment;
+            return {...state, errMess: null, comments: state.comments.concat(comment)}
         
         case ActionTypes.ADD_COMMENTS:
             return {...state,  errMess: null, comments: action.payload};
