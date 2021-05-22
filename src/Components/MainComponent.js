@@ -8,7 +8,7 @@ import Contact from './ContactComponent'
 import DishDetail from './DishDetailComponent';
 import About from './AboutComponent';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, postFeedback } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 
@@ -30,7 +30,9 @@ const mapDispatchToProps = (dispatch)=>({
   resetFeedbackForm: ()=>dispatch(actions.reset("feedback")),
   fetchDishes: () => dispatch(fetchDishes()),
   fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
   fetchComments: () => dispatch(fetchComments()),
+  postFeedback: (feedback) => dispatch(postFeedback(feedback))
 });
 
 class Main extends Component{
@@ -40,15 +42,15 @@ class Main extends Component{
 
   componentDidMount(){
     // start fetching dishes only when the main component is mounted
-    this.props.fetchDishes();
     this.props.fetchComments();
-    var temp = this.props.fetchPromos();
+    this.props.fetchPromos();
+    this.props.fetchDishes();
+    this.props.fetchLeaders();
   }
 
 
   render(){
       const HomePage = () => {
-        // console.log("props.promotions from Main Component:", this.props.dishes)
           return (
                 <Home 
                 dish = {this.props.dishes.dishes.filter((dish) => {return dish.featured} )[0]}
@@ -57,15 +59,15 @@ class Main extends Component{
                 promotion = {this.props.promotions.promotions.filter((promotion) => promotion.featured)[0]}
                 promoLoading = {this.props.promotions.isLoading}
                 promoErrMess = {this.props.promotions.errMess}
-                leader = {this.props.leaders.filter((leader) => leader.featured)[0]}
+                leader = {this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                leaderLoading = {this.props.leaders.isLoading}
+                leaderErrMess = {this.props.leaders.errMess}
                 />
           )
       }
 
       const DishWithId = ({match}) =>{
           var dishIdInt = parseInt(match.params.dishId);
-          console.log("commsnts from main component: ");
-          console.log(this.props.comments);
           return (
             <DishDetail 
             dish = {this.props.dishes.dishes.filter((dish) => dish.id === dishIdInt)[0]}
@@ -83,7 +85,7 @@ class Main extends Component{
         <Header />
         {/*  enables grouping together several routes */}
           <TransitionGroup>
-            <CSSTransition key={this.props.location.key} classNames="page">
+            <CSSTransition key={this.props.location.key} classNames="page" timeout={200}>
               <Switch>
                 {/* Now the problem here, when we go to http://app.com/users the router will go through all of our defined routes and return the FIRST match it finds. So in this case, it would find the Users route first and then return it. All good.
 
@@ -97,7 +99,7 @@ class Main extends Component{
                 <Route exact path="/menu" component={() => <Menu dishes ={this.props.dishes} />} />
                 <Route path="/menu/:dishId" component={DishWithId} />
                 <Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
-                <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} />
+                <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback}/>} />
                 {/* set the default path if there is no match */}
                 <Redirect to="home" />
               </Switch>

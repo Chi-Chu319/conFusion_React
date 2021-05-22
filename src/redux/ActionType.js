@@ -1,5 +1,6 @@
 // add a new comment with a form
 export const ADD_COMMENT = "ADD_COMMENT";
+export const ADD_FEEDBACK = "ADD_FEEDBACK";
 
 // fetching data from the server
 

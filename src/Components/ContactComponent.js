@@ -9,7 +9,7 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
-const validEmail = (val) => /^[A-Z0-9.%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/.test(val);
+const validEmail = (val) => /^[A-Za-z0-9.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(val);
 
 
 class Contact extends Component{
@@ -19,8 +19,19 @@ class Contact extends Component{
     }
 
     handleSubmit(values){
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        console.log("values: ", values)
+        // this.props.postFeedback(...values);
+        const newFeedback =  {
+            firstname: values.firstname, 
+            lastname: values.lastname, 
+            telnum: values.telnum, 
+            email: values.email, 
+            agree: values.agree, 
+            contactType: values.contactType, 
+            message: values.message
+        }
+        newFeedback.date = new Date().toISOString();
+        this.props.postFeedback(newFeedback);
         this.props.resetFeedbackForm();
     }
 

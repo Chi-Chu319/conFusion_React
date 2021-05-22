@@ -136,14 +136,14 @@ function RenderComment({comments, postComment, dishId}){
         const commentArray = comments.map(
             (comment)=>{
                 return(
-                    <Fade in>
-                        <div key={comment.id}>
+                    <div key={comment.id}>
+                        <Fade in>
                             <ListGroupItem className="border-0">
                                 {comment.comment}<br/>
                                 {" -- "+comment.author + ", " +  monthFormat(new Date(comment.date))}
                             </ListGroupItem>
-                        </div>
-                    </Fade>
+                        </Fade>
+                    </div>
                 );
             }
         )
